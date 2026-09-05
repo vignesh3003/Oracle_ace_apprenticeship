@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend-api:
+    build:
+      context: ./backend_api
+      dockerfile: Dockerfile
+    container_name: feedback-pulse-api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - PORT=8000
+      - OCI_CONFIG_FILE=/root/.oci/config
+      - OCI_COMPARTMENT_ID=${OCI_COMPARTMENT_ID}
+      - ORACLE_SODA_URL=${ORACLE_SODA_URL}
+      - ORACLE_DB_USER=${ORACLE_DB_USER}
+      - ORACLE_DB_PASSWORD=${ORACLE_DB_PASSWORD}
+    volumes:
+      - ~/.oci:/root/.oci:ro
+
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: feedback-pulse-dashboard
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend-api
