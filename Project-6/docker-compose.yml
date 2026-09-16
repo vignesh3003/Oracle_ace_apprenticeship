@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./src/backend
+      dockerfile: Dockerfile
+    container_name: cloudguard-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - PORT=8000
+      - OCI_CONFIG_FILE=/root/.oci/config
+      - OCI_COMPARTMENT_ID=${OCI_COMPARTMENT_ID}
+      - OCI_VAULT_OCID=${OCI_VAULT_OCID}
+    volumes:
+      - ~/.oci:/root/.oci:ro
+
+  frontend:
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+    container_name: cloudguard-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend

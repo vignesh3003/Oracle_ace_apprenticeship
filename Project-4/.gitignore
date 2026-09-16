@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+.venv
+node_modules/
+frontend/.next/
+frontend/out/
+.env
+.env.local
+oci_config
+*.pem
+oracle_wallet/
+*.log
+.DS_Store
